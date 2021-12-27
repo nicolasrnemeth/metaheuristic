@@ -1,3 +1,7 @@
+# Import required packages
+from TSP import TSP, Route
+from copy import deepcopy
+
 class LinKernighanHelsgaun(object):
     def __init__(self, Tsp, doAnalysis=False):
         self.solutions = set()

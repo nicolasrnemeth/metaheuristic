@@ -17,14 +17,11 @@ def output_solution(solution, ofilename, decorate=False):
     for node in solution:
         if decorate:
             if first:
+                first = False
                 content += ""
             else:
-                content += "|\nv"
-            if first:
-                first = False
-                content += "Node " + str(node)
-                continue
-            content += "\nNode " + str(node)
+                content += " -> "
+            content += "Node " + str(node)
         else:
             if first:
                 first = False
@@ -32,5 +29,11 @@ def output_solution(solution, ofilename, decorate=False):
             else:
                 content += ','
             content += str(node)
+            
+    if decorate:
+        content += "Node " + str(solution[0])+' EOF\n'
+    else:
+        content += ','+str(solution[0])+' EOF\n'
+        
     with open(ofilename, 'w') as ofile:
         ofile.write(content)

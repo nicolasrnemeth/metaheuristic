@@ -6,7 +6,6 @@ from argparse import ArgumentParser
 # Import custom classes
 import helper # file with helper functions
 from FileParser import FileParser
-from Route import Route
 from LinKernighanHelsgaun import LinKernighanHelsgaun
 from TSP import TSP
 
@@ -17,7 +16,8 @@ def _main_(args):
     distance_matrix, coordinates = fileparser.parsed_data()
     
     # Instantiations
-    Tsp = TSP(coordinates, distance_matrix)
+    # Specify _rng_ to for reproducibility (initial path is random)
+    Tsp = TSP(coordinates, distance_matrix, _rng_=None)
     LinKerHel = LinKernighanHelsgaun(Tsp, args.analysis)
     start_time = time.time()
     # Perform heuristic optimization
@@ -30,12 +30,13 @@ def _main_(args):
     
     # Print results overview
     if args.stats:
-        print("Running_time:", exec_time)
-        print("Length of heuristic path ="´, path_length)
+        print("\nRunning_time:", exec_time)
+        print("Length of heuristic path (rounded to 1 digit after decimal point) =", round(path_length,1))
         print("\nPath found by heuristic:\n")
         for node in approx_solution:
             print(str(node)+' ->', end=' ')
-        print(approx_solution[0], end=' ')
+        print(approx_solution[0])
+        print("\n")
 
 if __name__ == "__main__":
     # Add argument parser

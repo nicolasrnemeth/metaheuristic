@@ -4,7 +4,7 @@ import time
 import json
 from argparse import ArgumentParser
 # Import custom classes
-import helper # file with helper functions
+import helper
 from FileParser import FileParser
 from LinKernighanHelsgaun import LinKernighanHelsgaun
 from TSP import TSP

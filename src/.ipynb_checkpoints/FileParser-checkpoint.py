@@ -11,8 +11,8 @@ class FileParser(object):
     def __init__(self, filepath, edge_weight_section=False):
         self.filepath = filepath
         self.distMatrix = None
-        self.edge_weight_section = edge_weight_section
         self.coordinates = None
+        self.edge_weight_section = edge_weight_section
     
     # Input given as node coordinates
     def node_coord(self, idx):
@@ -25,7 +25,7 @@ class FileParser(object):
                 nodes.append([float(x), float(y)])
             nodes = np.array(nodes)
             self.coordinates = nodes
-            self.distMatrix = squareform( pdist(nodes, metric="euclidean") )
+            self.distMatrix = squareform( pdist( nodes, metric="euclidean" ) )
         
     # Input given as edge weights
     def edge_weight(self, idx):

@@ -5,9 +5,9 @@ import json
 from argparse import ArgumentParser
 # Import custom classes
 import helper
-from FileParser import FileParser
-from LinKernighanHelsgaun import LinKernighanHelsgaun
 from TSP import TSP
+from FileParser import FileParser
+from LinKernighan import LinKernighan
 
 def _main_(args):
     """ Main program """
@@ -18,10 +18,10 @@ def _main_(args):
     # Instantiations
     # Specify _rng_ to for reproducibility (initial path is random)
     Tsp = TSP(coordinates, distance_matrix, _rng_=None)
-    LinKerHel = LinKernighanHelsgaun(Tsp, args.analysis)
+    LinKer = LinKernighan(Tsp, args.analysis)
     start_time = time.time()
     # Perform heuristic optimization
-    approx_solution, path_length = LinKerHel.optimize()
+    approx_solution, path_length = LinKer.optimize()
     # Parse execution time
     exec_time = helper.parse_time( time.time() - start_time )
     

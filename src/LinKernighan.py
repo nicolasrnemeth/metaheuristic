@@ -1,11 +1,14 @@
 # Import required packages
+import time
+from numpy import inf as Infinity
 from TSP import TSP, Path
 
 # Custom class
 class LinKernighan(object):
     """ Heuristic to solve TSP """
-    def __init__(self, Tsp, doAnalysis=False):
+    def __init__(self, Tsp, doAnalysis=False, timeLimit=Infinity):
         self.Tsp = Tsp
+        self.timeLimit = timeLimit*60
         self.solutions = set()
         self.doAnalysis = True if doAnalysis else False
         # Create a potential neighbor list for each node
@@ -46,7 +49,8 @@ class LinKernighan(object):
     
     def optimize(self):
         """ Start heuristic optimization """
-        while True:
+        start_time = time.time()
+        while (time.time() - start_time) < self.timeLimit:
             # Keep track of improved solutions to check for
             # duplicate solutions during optimization run
             self.solutions.add(tuple(self.Tsp.path))
@@ -57,7 +61,6 @@ class LinKernighan(object):
     def nearest_neighbors(self, node_relink, path, profit_gain, edges_remove, edges_add):
         """ Find nearest neighbors of a node based on the potential gain """
         neighbors_gain = dict()
-        
         for node in self.neighbors[node_relink]:
             edge_add_i = tuple(sorted([node_relink, node]))
             gain_i = profit_gain - TSP.distance_matrix[node_relink, node]
@@ -85,16 +88,7 @@ class LinKernighan(object):
 
     def select_edge_remove(self, path, n1, last, gain, edges_remove, edges_add):
         """ Select which edge to remove from the current path """
-        if len(edges_remove) == 4:
-            prev, next_ = path.neighbors(last)
-
-            # Remove more promising edge (i.e. edge which higher cost)
-            if TSP.distance_matrix[prev, last] > TSP.distance_matrix[next_, last]:
-                neighbor = [prev]
-            else:
-                neighbor = [next_]
-        else:
-            neighbor = path.neighbors(last)
+        neighbor = path.neighbors(last)
 
         for node_relink in neighbor:
             edge_remove = tuple(sorted([last, node_relink]))
@@ -118,7 +112,7 @@ class LinKernighan(object):
                     continue
 
                 # Stop the search when we arrive at a duplicate solution
-                if str(new_path) in self.solutions:
+                if tuple(new_path) in self.solutions:
                     return False
 
                 # Save the path if it is an improvement
@@ -152,7 +146,7 @@ class LinKernighan(object):
                 return True
 
             num_search -= 1
-            # Stop when maximum number of searches reaches
+            # Stop when maximum number of searches reached
             if num_search == 0:
                 return False
             

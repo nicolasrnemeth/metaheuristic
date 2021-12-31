@@ -2,6 +2,7 @@
 import sys
 import time
 import json
+from numpy import inf as Infinity
 from argparse import ArgumentParser
 # Import custom classes
 import helper
@@ -18,7 +19,7 @@ def _main_(args):
     # Instantiations
     # Specify _rng_ to for reproducibility (initial path is random)
     Tsp = TSP(coordinates, distance_matrix, _rng_=None)
-    LinKer = LinKernighan(Tsp, args.analysis)
+    LinKer = LinKernighan(Tsp, args.analysis, args.timeLimit)
     start_time = time.time()
     # Perform heuristic optimization
     approx_solution, path_length = LinKer.optimize()
@@ -46,6 +47,8 @@ if __name__ == "__main__":
     argParser.add_argument("--decorate", action="store_true", help="Decorate solution in output file.")
     argParser.add_argument("--stats", action="store_true", help="Print results overview.")
     argParser.add_argument("--analysis", default=None, type=str, help="""Collect analysis data and dump it as JSON file.""")
+    argParser.add_argument("--timeLimit", default=Infinity, type=float, 
+                           help="""Set a time limit (in minutes) after which to stop optimization run.""")
     
     # Execute main program
     _main_(argParser.parse_args())

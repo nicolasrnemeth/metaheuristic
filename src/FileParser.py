@@ -65,7 +65,7 @@ class FileParser(object):
                     self.node_coord(idx)
                     return self
                 if self.edge_weight_section:
-                    if line.strip().split(" ")[0] == "EDGE_WEIGHT_FORMAT":
+                    if line.strip().split(" ")[0] == "EDGE_WEIGHT_FORMAT:":
                         self.format = line.strip().split(" ")[1]
                     if line.strip() == "EDGE_WEIGHT_SECTION":
                         self.edge_weight(idx)

@@ -83,7 +83,7 @@ class TSP(object):
         # Random solution to start with
         # Make results reproducible by setting RNG seed
         RNG = np.random.default_rng(_rng_)
-        self.start_path = list(RNG.permutation(len(node_coord)))
+        self.start_path = list(RNG.permutation(len(dist_matrix)))
         self.start_path_length = TSP.get_length(self.start_path)
         self.Path = Path(self.start_path)
         # Current heuristic optimization path

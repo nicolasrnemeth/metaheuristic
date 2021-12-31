@@ -13,7 +13,7 @@ from LinKernighan import LinKernighan
 def _main_(args):
     """ Main program """
     # Parse input file
-    fileparser = FileParser(args.filename).parse()
+    fileparser = FileParser(args.filename, args.edge_weights).parse()
     distance_matrix, coordinates = fileparser.parsed_data()
     
     # Instantiations
@@ -44,6 +44,7 @@ if __name__ == "__main__":
     argParser = ArgumentParser(description="Solve TSP with Lin Kernighan Helsgaun Heuristic.")
     argParser.add_argument("filename", help="Specify name of input file.")
     argParser.add_argument("-o", required=True, type=str)
+    argParser.add_argument("--edge_weights", action="store_true", help="Read in edge weights instead of node coordinates.")
     argParser.add_argument("--decorate", action="store_true", help="Decorate solution in output file.")
     argParser.add_argument("--stats", action="store_true", help="Print results overview.")
     argParser.add_argument("--analysis", default=None, type=str, help="""Collect analysis data and dump it as JSON file.""")

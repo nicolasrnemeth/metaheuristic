@@ -47,7 +47,7 @@ def _main_(args):
 
 if __name__ == "__main__":
     # Add argument parser
-    argParser = ArgumentParser(description="Solve TSP with Lin Kernighan Helsgaun Heuristic.")
+    argParser = ArgumentParser(description="Solve TSP with R-opt Heuristic.")
     argParser.add_argument("filename", help="Specify name of input file.")
     argParser.add_argument("-o", required=True, type=str)
     argParser.add_argument("--params", default=[5,1], type=int, nargs=2, 

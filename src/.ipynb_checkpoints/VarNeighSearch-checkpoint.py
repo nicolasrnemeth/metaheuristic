@@ -20,12 +20,13 @@ class VarNeighSearch(object):
             """ Dictionary with collection of analysis data:
             number of nodes, path lengths of each improvement, elapsed time between each improvement,
             number of edges removed/added, i.e. number of opt-moves performed for path improvement,
-            execution time of optimization run, coordinates of nodes
+            execution time of optimization run, x and y coordinates of nodes
             """
             self.analysisData = dict(node_count=deepcopy(self.Tsp.Path.node_count), 
                                      path_lengths=[deepcopy(self.Tsp.start_path_length)], 
                                      elapsed_times=list(), num_moves=list(), exec_time=None, 
-                                     avgCost1000Trials=avgCost_1000randTrials, node_coor=TSP.node_coordinates)
+                                     avgCost1000Trials=avgCost_1000randTrials, x_coor=list(TSP.node_coordinates[:,0]),
+                                     y_coor=list(TSP.node_coordinates[:,1]))
         """ Specify maximum number of nodes to try before to switch to the other 
         neighbor of n2, i.e. before selecting the other edge to remove given starting node n1 """
         self.max_nodes_2opt = max_nodes_2opt
@@ -40,17 +41,17 @@ class VarNeighSearch(object):
     
     def optimize(self):
         """ Start heuristic optimization """
-        start_time = time.time()
+        self.start_time = time.time()
         if self.doAnalysis:
             self.elapsed_time = time.time()
-        while (time.time() - start_time) < self.timeLimit:
+        while (time.time() - self.start_time) < self.timeLimit:
             # Keep track of improved solutions to check for
             # duplicate solutions during optimization run
             self.solutions.add(tuple(self.Tsp.path))
             if not self.r_opt():
                 break
         if self.doAnalysis:
-            self.analysisData["exec_time"] = time.time() - start_time
+            self.analysisData["exec_time"] = time.time() - self.start_time
         return self.Tsp.path, self.Tsp.path_length, self.analysisData if self.doAnalysis else None
     
     def r_opt(self):
@@ -76,6 +77,9 @@ class VarNeighSearch(object):
                     # Restart the algorithm after a better path was found
                     if self.select_edge_remove(path, n1, n3, gain_i, edges_remove, set([tuple(sorted([n2, n3]))])):
                         return True
+                    else:
+                        if (time.time() - self.start_time) > self.timeLimit:
+                            return False
                     
                     num_nodes += 1
                     # Maximum number of nodes before to try before to try the other neighbor of n1 -> n2
@@ -115,6 +119,9 @@ class VarNeighSearch(object):
 
     def select_edge_remove(self, path, n1, last, gain, edges_remove, edges_add):
         """ Select which edge to remove from the current path """
+        if (time.time() - self.start_time) > self.timeLimit:
+            return False
+            
         neighbor = path.neighbors(last)
 
         for node_relink in neighbor:
@@ -169,6 +176,9 @@ class VarNeighSearch(object):
             # Forward added edges but select further edge to remove and stop if better path was found
             if self.select_edge_remove(path, t1, node, gain_i, edges_remove, added_edges):
                 return True
+            else:
+                if (time.time() - self.start_time) > self.timeLimit:
+                    return False
 
             num_nodes += 1
             # Stop when enough nodes were tried

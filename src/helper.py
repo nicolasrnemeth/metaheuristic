@@ -31,7 +31,7 @@ def output_solution(solution, ofilename, decorate=False):
             content += str(node)
             
     if decorate:
-        content += "Node " + str(solution[0])+' EOF\n'
+        content += " -> Node " + str(solution[0])+' EOF\n'
     else:
         content += ','+str(solution[0])+' EOF\n'
         

@@ -19,7 +19,7 @@ def _main_(args):
     # Instantiations
     # Specify _rng_ to for reproducibility (initial path is random)
     Tsp = TSP(coordinates, distance_matrix, _rng_=None)
-    LocalSearch = VarNeighSearch(Tsp, args.params[0], args.params[1], args.analysis, args.timeLimit)
+    LocalSearch = VarNeighSearch(Tsp, args.params[0], args.params[1], args.analysis, args.timeLimit, args.maxOptMove)
     start_time = time.time()
     # Perform heuristic optimization
     approx_solution, path_length, analysisData = LocalSearch.optimize()
@@ -57,6 +57,8 @@ if __name__ == "__main__":
     argParser.add_argument("--analysis", default=None, type=str, help="Collect analysis data and dump it as JSON file.")
     argParser.add_argument("--timeLimit", default=Infinity, type=float, 
                            help="Set a time limit (in minutes) after which to stop optimization run.")
+    argParser.add_argument("--maxOptMove", default=Infinity, type=float,
+                           help="Set the maximum number of moves (k) which are allowed, to find a better solution in the r-neighborhood of the current.")
     
     # Execute main program
     _main_(argParser.parse_args())

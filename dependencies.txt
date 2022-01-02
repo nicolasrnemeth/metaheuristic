@@ -1,0 +1,11 @@
+I used python 3.8, but it should work for any python 3 version.
+
+Apart from python STDL following import statements were used / external packages are required:
+
+--> numpy
+--> matplotlib
+--> scipy
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.spatial.distance import pdist, squareform

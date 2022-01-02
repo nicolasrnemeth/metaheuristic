@@ -17,21 +17,18 @@ def path_length(path, node_coors_):
     return length
 
 
-program, analysisFile, solFile = sys.argv
+program, analysisFile, optFile = sys.argv
 
 # Read in optimal solutions
-solFile = "input_data/berlin52_optimum"
 optimal_path = list()
-with open(solFile+".txt", 'r') as sFile:
+with open(optFile+".txt", 'r') as sFile:
     for line in sFile.readlines():
         if line.strip() == "EOF":
             break
         if line.strip().isdigit():
             optimal_path.append(int(line.strip())-1)
 
-analysisFile="analysis/berlin52_5_1"
-name = analysisFile.split("/")[-1]
-    
+name = analysisFile.split("/")[-1]    
 with open(analysisFile+".json", 'r') as iFile:
     data = json.load(iFile)
     
@@ -47,10 +44,10 @@ axes.get_xaxis().set_visible(False)
 axes.get_yaxis().set_visible(False)
 
 data_table = [['exec. time', helper.parse_time(data['exec_time'])],
-              ['optimal cost', round(optimal_length,2)],
+              ['optimal cost', str(np.round(optimal_length,2))+" (2dp)"],
               ['how close is heuristic?', 
-               str(round((data['path_lengths'][-1]/optimal_length)*100,2)-100)+" %"],
-              ['avg. cost 1000 rand. trials', round(data['avgCost1000Trials'],2)],
+               '+ '+str(np.round((data['path_lengths'][-1]/optimal_length*100)-100, 2))+" % (2dp)"],
+              ['avg. cost 1000 rand. trials', str(round(data['avgCost1000Trials'],2))+" (2dp)"],
               ['# nodes', data['node_count']],
               ['max nodes 2-opt', analysisFile.split("_")[1]],
               ['max nodes r-opt (r > 2)', analysisFile.split("_")[2]]]
@@ -73,7 +70,7 @@ plt.xlim((plt.xlim()[0]-0.05*plt.xlim()[1], plt.xlim()[1]*1.05))
 plt.xlabel("x-coordinate", labelpad=10)
 plt.ylabel("y-coordinate", labelpad=10)
 plt.title(name.split("_")[0])
-plt.savefig(name+"_nodes.pdf", dpi=300)
+plt.savefig(name+"_nodes.pdf", dpi=300, bbox_inches='tight')
 plt.close()
 
 
@@ -87,19 +84,19 @@ plt.xlim((plt.xlim()[0]-0.05*plt.xlim()[1], plt.xlim()[1]*1.05))
 plt.xlabel("exec time (in sec.)", labelpad=10)
 plt.ylabel("Path Cost", labelpad=10)
 plt.title(name.split("_")[0] + " - Cost reduction over time")
-plt.savefig(name+"_costOverTime.pdf", dpi=300)
+plt.savefig(name+"_costOverTime.pdf", dpi=300, bbox_inches='tight')
 plt.close()
 
 
 # Number of moves for each improvement
-plt.plot(list(range(1,len(data["num_moves"])+1)), data["num_moves"], c="blue")
+plt.scatter(list(range(1,len(data["num_moves"])+1)), data["num_moves"], c="purple")
 plt.box(on=None)
 plt.ylim((plt.ylim()[0]-0.05*plt.ylim()[1], plt.ylim()[1]*1.05))
 plt.xlim((plt.xlim()[0]-0.05*plt.xlim()[1], plt.xlim()[1]*1.05))
 plt.xlabel("improvement number", labelpad=10)
 plt.ylabel("# moves", labelpad=10)
 plt.title(name.split("_")[0] + " - Number of edges removed/added")
-plt.savefig(name+"_numMoves.pdf", dpi=300)
+plt.savefig(name+"_numMoves.pdf", dpi=300, bbox_inches='tight')
 plt.close()
 
 
@@ -111,5 +108,5 @@ plt.xlim((plt.xlim()[0]-0.05*plt.xlim()[1], plt.xlim()[1]*1.05))
 plt.xlabel("improvement number", labelpad=10)
 plt.ylabel("Elapsed time (in sec.)", labelpad=10)
 plt.title(name.split("_")[0] + " - Elapsed time before next improvement")
-plt.savefig(name+"_elapsedTime.pdf", dpi=300)
+plt.savefig(name+"_elapsedTime.pdf", dpi=300, bbox_inches='tight')
 plt.close()

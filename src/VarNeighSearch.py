@@ -8,8 +8,11 @@ from TSP import TSP, Path
 # Custom class
 class VarNeighSearch(object):
     """ Solve TSP with Variable Neighborhood Search """
-    def __init__(self, Tsp, max_nodes_2opt=5, max_nodes_2p_opt=1, doAnalysis=False, timeLimit=Infinity):
+    def __init__(self, Tsp, max_nodes_2opt=5, max_nodes_2p_opt=1, doAnalysis=False, timeLimit=Infinity, maxR=Infinity):
         self.Tsp = Tsp
+        # Maximum size of an r-opt move (default is inifinity)
+        # The search space is naturally limited by trying most promising 'x' nodes instead of all
+        self.maxR = maxR
         self.timeLimit = timeLimit*60
         self.solutions = set()
         self.doAnalysis = True if doAnalysis else False
@@ -132,13 +135,17 @@ class VarNeighSearch(object):
 
             # Check for disjointness
             if edge_remove not in edges_add and edge_remove not in edges_remove:
-                relink_profit = gain_i - TSP.distance_matrix[node_relink, n1]
+                relink_profit = gain_i - TSP.distance_matrix[edge_add]
                 
                 # Create shallow copies of both sets and update them
                 removed_edges = edges_remove.copy()
                 removed_edges.add(edge_remove)
                 added_edges = edges_add.copy()
                 added_edges.add(edge_add)
+                
+                # Stop the search when maximum allowed (r-opt-)move was reached
+                if len(added_edges) > self.maxR:
+                    return False
                 
                 is_path, new_path = path.create_path(removed_edges, added_edges)
 

@@ -39,7 +39,7 @@ class Path(object):
         
         # We can start from an arbitrary node, in this case 0
         node = 0
-        # Create all successors
+        # Track the next node of each one in a dict
         next_nodes = dict()
         while edges != set():
             for l, r in edges:
@@ -53,7 +53,7 @@ class Path(object):
                     break
             edges -= set([(l, r)])
             
-        # Check if there are enough nodes to create a path
+        # Check if each node has a degree of 2
         if len(next_nodes) < self.node_count:
             return False, list()
 

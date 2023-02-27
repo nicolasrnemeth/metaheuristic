@@ -85,8 +85,5 @@ the distance matrix already from the node coordinates.
 (following sources were used to gain insights and ideas on how to implement the heuristic)
 
 - https://en.wikipedia.org/wiki/2-opt
-- http://webhotel4.ruc.dk/~keld/research/LKH/KoptReport.pdf
-- https://arthur.maheo.net/implementing-lin-kernighan-in-python/
 - http://www.ra.cs.uni-tuebingen.de/lehre/ss03/vs_mh/mh-vorlesung.pdf
 - https://doi.org/10.1007/s12532-009-0004-6
-- http://webhotel4.ruc.dk/~keld/research/LKH/LKH-1.3/DOC/LKH_REPORT.pdf

@@ -1,6 +1,6 @@
 ## Heuristic Algorithm for solving the TSP problem
 
-- author: Nicolas Nemeth, 01506257
+- author: Nicolas Nemeth
 
 - Problem: Travelling Salesman Problem
 

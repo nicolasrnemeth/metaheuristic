@@ -1,4 +1,4 @@
-## Computational Optimisation Assigment 2: Heuristic Algorithm
+## Heuristic Algorithm for solving the TSP problem
 
 - author: Nicolas Nemeth, 01506257
 

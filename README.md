@@ -4,7 +4,7 @@
 
 - Problem: Travelling Salesman Problem
 
-- Approach: Variational Neighborhood Search with R-opt first improvement heuristic
+- Approach: Neighborhood Search with R-opt first improvement heuristic
 
 ## Dependencies
 
